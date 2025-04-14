@@ -7,6 +7,7 @@ const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
 const body_parser_1 = __importDefault(require("body-parser"));
 const Adminauth_router_1 = __importDefault(require("./api/Admin/Adminauth/Adminauth.router"));
+const Clients_router_1 = __importDefault(require("./api/Marketing/Clients/Clients.router"));
 class App {
     constructor() {
         this.app = (0, express_1.default)();
@@ -23,6 +24,7 @@ class App {
             res.send("Hello, TypeScript Backend!!");
         });
         this.app.use("/admin", Adminauth_router_1.default.router);
+        this.app.use("/marketing", Clients_router_1.default.router);
     }
 }
 exports.default = App;

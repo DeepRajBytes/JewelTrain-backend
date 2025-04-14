@@ -36,7 +36,7 @@ class AdminauthController {
             }
         }
         catch (error) {
-            throw new Error(error);
+            res.status(config_json_1.config.statusCode.internalServer).json({ error: error.message });
         }
     }
 }

@@ -31,7 +31,7 @@ export class AdminauthController {
           });
       }
     } catch (error: any) {
-      throw new Error(error);
+      res.status(config.statusCode.internalServer).json({ error: error.message });
     }
   }
 }

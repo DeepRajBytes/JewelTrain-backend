@@ -34,30 +34,25 @@ var __importStar = (this && this.__importStar) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importStar(require("mongoose"));
-const clientRequestData = new mongoose_1.Schema({
-    email: {
+const SMPT_Details = new mongoose_1.Schema({
+    service: {
         type: String,
-        required: true,
     },
-    name: {
+    host: {
         type: String,
-        required: true,
     },
-    lastname: {
-        type: String,
-        default: "sir",
-    },
-    brandName: {
-        type: String,
-        default: "NULL",
-    },
-    number: {
+    port: {
         type: Number,
-        required: true,
     },
-    message: {
+    user: {
+        type: String,
+    },
+    password: {
+        type: String,
+    },
+    admin_email: {
         type: String,
     },
 });
-const ClientRequestModel = mongoose_1.default.model("Clients", clientRequestData);
-exports.default = ClientRequestModel;
+const smptModel = mongoose_1.default.model("SMPT_Details", SMPT_Details);
+exports.default = smptModel;

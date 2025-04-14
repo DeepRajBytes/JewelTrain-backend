@@ -2,6 +2,7 @@ import express, { Request, Response } from "express";
 import cors from 'cors';
 import bodyParser from "body-parser";
 import adminAuthRouter from "./api/Admin/Adminauth/Adminauth.router";
+import clientRouter from "./api/Marketing/Clients/Clients.router"
 import config from "./config/ENV/config";
 
 
@@ -25,6 +26,7 @@ class App {
       res.send("Hello, TypeScript Backend!!");
     });
     this.app.use("/admin", adminAuthRouter.router);
+    this.app.use("/marketing", clientRouter.router);
   }
 }
 export default App;
