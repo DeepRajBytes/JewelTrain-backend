@@ -4,12 +4,19 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "tsc",
+    "build": "rimraf dist && tsc",
     "start": "node dist/server.js",
     "dev": "ts-node src/server.ts",
+    "ts.check": "tsc --project tsconfig.json",
     "watch": "tsc -w",
+    "add-build": "git add dist",
     "dev:start": "concurrently \"tsc -w\" \"nodemon dist/server.js\""
   },
+  "pre-commit": [
+      "ts.check",
+      "build",
+      "add-build"
+  ],
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -19,6 +26,8 @@
     "@types/mongoose": "^5.11.97",
     "@types/nodemailer": "^6.4.17",
     "concurrently": "^9.1.2",
+    "pre-commit": "^1.2.2",
+    "rimraf": "^6.0.1",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.2"
   },
