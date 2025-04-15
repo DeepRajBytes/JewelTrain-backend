@@ -10,6 +10,6 @@
     "forceConsistentCasingInFileNames": true, // Enforces consistent casing in file names.
     "resolveJsonModule": true // allows to import json files as modules.
   },
-  "include": ["src/**/*"], // Include all TypeScript files in the 'src' directory
+  "include": ["./src/**/*"], // Include all TypeScript files in the 'src' directory
   "exclude": ["node_modules"] // Exclude node_modules folder.
 }
