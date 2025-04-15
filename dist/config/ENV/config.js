@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
 const config = {
+    mode: process.env.NODE_ENV,
     port: parseInt(process.env.PORT || "3001", 10),
     mongoDBurl: process.env.MONGODB_URI,
 };
