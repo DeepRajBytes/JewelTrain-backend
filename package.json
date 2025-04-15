@@ -13,9 +13,9 @@
     "dev:start": "concurrently \"tsc -w\" \"nodemon dist/server.js\""
   },
   "pre-commit": [
-      "ts.check",
-      "build",
-      "add-build"
+    "ts.check",
+    "build",
+    "add-build"
   ],
   "keywords": [],
   "author": "",
@@ -32,6 +32,7 @@
     "typescript": "^5.8.2"
   },
   "dependencies": {
+    "@types/cors": "^2.8.17",
     "@types/express": "^5.0.1",
     "bcrypt": "^5.1.1",
     "body-parser": "^2.2.0",
