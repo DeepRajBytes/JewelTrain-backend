@@ -3,6 +3,7 @@ import cors from 'cors';
 import bodyParser from "body-parser";
 import adminAuthRouter from "./api/Admin/Adminauth/Adminauth.router";
 import clientRouter from "./api/Marketing/Clients/Clients.router"
+import userRoute from "./api/Marketing/Users/User.router";
 import config from "./config/ENV/config";
 
 
@@ -27,6 +28,7 @@ class App {
     });
     this.app.use("/admin", adminAuthRouter.router);
     this.app.use("/marketing", clientRouter.router);
+    this.app.use("/marketing", userRoute.router);
   }
 }
 export default App;
