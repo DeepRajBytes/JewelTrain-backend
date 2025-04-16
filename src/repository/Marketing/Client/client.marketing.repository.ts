@@ -17,7 +17,6 @@ class ClientRepository implements IClientRepository {
         message,
       });
       if (ClientCard) {
-        console.log("ClientCard",ClientCard)
         let userInfo = {
           email: ClientCard.email,
           name: ClientCard.name + '  ' +ClientCard.lastname,
@@ -25,7 +24,7 @@ class ClientRepository implements IClientRepository {
           number: ClientCard.number,
           message: ClientCard.message,
         };
-        await commonSerice.sentMail(userInfo);
+        commonSerice.sentMail(userInfo);
         commonSerice.sentAdminMail(userInfo);
       }
       return ClientCard;
