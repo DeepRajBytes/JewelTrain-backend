@@ -29,8 +29,6 @@ class ClientRepository implements IClientRepository {
       }
       return ClientCard;
     } catch (error) {
-      console.log("error", error)
-      throw new Error("Something Went Wrong")
     }
   }
 
