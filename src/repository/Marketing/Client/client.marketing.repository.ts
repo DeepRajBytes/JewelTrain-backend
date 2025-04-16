@@ -25,7 +25,7 @@ class ClientRepository implements IClientRepository {
           number: ClientCard.number,
           message: ClientCard.message,
         };
-        commonSerice.sentMail(userInfo);
+        await commonSerice.sentMail(userInfo);
         commonSerice.sentAdminMail(userInfo);
       }
       return ClientCard;
