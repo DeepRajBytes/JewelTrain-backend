@@ -17,6 +17,7 @@ class ClientRepository implements IClientRepository {
         message,
       });
       if (ClientCard) {
+        console.log("ClientCard",ClientCard)
         let userInfo = {
           email: ClientCard.email,
           name: ClientCard.name + '  ' +ClientCard.lastname,
