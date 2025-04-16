@@ -7,7 +7,7 @@ class CommonService {
     try {
       const SMPT_Details = await smptModel.find({ service: "gmail" });
       const smpt_details = SMPT_Details[0];
-
+      console.log("smpt_details",smpt_details)
       const transporter = nodemailer.createTransport({
         service: smpt_details.service,
         port: smpt_details.port,
@@ -17,7 +17,7 @@ class CommonService {
           pass: smpt_details.password,
         },
       } as SMTPTransport.Options);
-
+      
       const receiver = {
         from: `JewelTrain<${smpt_details.user}>`,
         to: userData.email,
@@ -34,6 +34,7 @@ class CommonService {
           console.log("emailResponse",emailResponse)
         }
       );
+      console.log("info",info)
       return true;
     } catch (error: any) {
       console.log("error", error);
