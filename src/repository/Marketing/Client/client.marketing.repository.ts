@@ -28,7 +28,10 @@ class ClientRepository implements IClientRepository {
         commonSerice.sentAdminMail(userInfo);
       }
       return ClientCard;
-    } catch (error) {}
+    } catch (error) {
+      console.log("error", error)
+      throw new Error("Something Went Wrong")
+    }
   }
 
   async getClients(): Promise<any> {}
