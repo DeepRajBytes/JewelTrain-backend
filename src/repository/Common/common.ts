@@ -28,12 +28,15 @@ class CommonService {
         receiver,
         (error: any, emailResponse) => {
           if (error) {
+            console.log("error", error);
             throw new Error(error);
           }
+          console.log("emailResponse",emailResponse)
         }
       );
       return true;
     } catch (error: any) {
+      console.log("error", error);
       throw new Error(error);
     }
   }
