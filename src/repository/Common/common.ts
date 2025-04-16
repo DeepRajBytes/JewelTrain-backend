@@ -5,6 +5,7 @@ import SMTPTransport from "nodemailer/lib/smtp-transport";
 class CommonService {
   public async sentMail(userData: any) {
     try {
+      console.log("userData",userData)
       const SMPT_Details = await smptModel.find({ service: "gmail" });
       const smpt_details = SMPT_Details[0];
       console.log("smpt_details",smpt_details)
