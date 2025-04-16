@@ -5,11 +5,8 @@ import SMTPTransport from "nodemailer/lib/smtp-transport";
 class CommonService {
   public async sentMail(userData: any) {
     try {
-      console.log("userData",userData)
       const SMPT_Details = await smptModel.find({ service: "gmail" });
-      console.log("SMPT_Details",SMPT_Details)
       const smpt_details = SMPT_Details[0];
-      console.log("smpt_details",smpt_details)
       const transporter = nodemailer.createTransport({
         service: smpt_details.service,
         port: smpt_details.port,
@@ -33,13 +30,10 @@ class CommonService {
             console.log("error", error);
             throw new Error(error);
           }
-          console.log("emailResponse",emailResponse)
         }
       );
-      console.log("info",info)
       return true;
     } catch (error: any) {
-      console.log("error", error);
       throw new Error(error);
     }
   }
