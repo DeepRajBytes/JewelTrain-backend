@@ -1,5 +1,6 @@
 import fs from "fs";
 import { google } from "googleapis";
+import { Readable } from "stream";
 
 const apikeys = {
   type: "service_account",
@@ -34,36 +35,38 @@ class DriveUploadMEthods {
     return jwtclient;
   }
 
-  public async uploadFIle(authClient: any) {
+  public async uploadFIle(authClient: any, file: any, newFileName: string) {
     // console.log("yha tak bat aayi", authClient);
     return new Promise((resolve, rejected) => {
-        const drive = google.drive({ version: "v3", auth: authClient });
+      const drive = google.drive({ version: "v3", auth: authClient });
 
-        var FilemetaData = {
-            name:"hy",
-            parents: ["1Pr7WQTo0t6_7ZYsGoBn085cDO3zlUZTr"]
-        }
+      var FilemetaData = {
+        name: newFileName,
+        parents: ["1Pr7WQTo0t6_7ZYsGoBn085cDO3zlUZTr"],
+      };
 
-        drive.files.create(
-          {
-            requestBody: FilemetaData,
-            media: {
-              body: fs.createReadStream(
-                "/home/deepraj/deepraj personal/JewelTrain/Backend/src/config/Upload/mydrivetext.txt"
-              ),
-              mimeType: "text/plain",
-            },
-            fields: "id, webViewLink",
+      const bufferStream = new Readable();
+      bufferStream.push(file.buffer);
+      bufferStream.push(null);
+
+      drive.files.create(
+        {
+          requestBody: FilemetaData,
+          media: {
+            body: bufferStream,
+            mimeType: file.mimetype,
           },
-          (err: any, file: any) => {
-            if (err) {
-              console.log("err", err);
-              return rejected(err);
-            }
-            resolve(file);
+          fields: "id, webViewLink",
+        },
+        (err: any, file: any) => {
+          if (err) {
+            console.log("err upload", err);
+            return rejected(err);
           }
-        );
-    })
+          resolve(file);
+        }
+      );
+    });
   }
 }
 

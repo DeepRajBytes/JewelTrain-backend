@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { Usercontroller } from "./User.controller";
+import { uploadMiddleware } from "../../../config/Middlerware/UploadResumeMidlle";
 class Userroute {
   router: Router;
   private userController = new Usercontroller;
@@ -8,7 +9,8 @@ class Userroute {
     this.init();
   }
   init() {
-    this.router.post("/userCreate", this.userController.Saveuser);
+    this.router.post("/userCreate",uploadMiddleware, this.userController.Saveuser);
+    this.router.get("/userIntitalse", this.userController.GetInfoForUser);
   }
 }
 
