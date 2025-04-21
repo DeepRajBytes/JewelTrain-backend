@@ -3,6 +3,7 @@ import DriveUploadMEthods from "../../../config/Upload/drive.upload";
 import { IUserRepository } from "../../contracts/Marketing/User/i.user.marketing.repository";
 import Experience from "../../../Database/Model/common/Experience/Experience";
 import State from "../../../Database/Model/common/Address/State";
+import UserModel from "../../../Database/Model/Marketing/UserRequest";
 
 class UserRepository implements IUserRepository {
   public async SaveUser(req: any): Promise<any> {
@@ -10,7 +11,23 @@ class UserRepository implements IUserRepository {
       const uploader = new DriveUploadMEthods();
       const file = req.file;
       const currentDate = moment().format("YYYY-MM-DD");
-      const { firstname, lastname } = req.body;
+      const {
+        firstname,
+        lastname,
+        about,
+        email,
+        number,
+        country,
+        street,
+        city,
+        state,
+        expirence,
+        currentorg,
+        currentctc,
+        expectctc,
+        relocate,
+        retailExp,
+      } = req.body;
       const newFileName = `${currentDate}_${firstname.replace(
         / /g,
         "_"
@@ -19,21 +36,45 @@ class UserRepository implements IUserRepository {
       )}`;
 
       // Upload File
-      let UploadedResumeDetails: any
+      let UploadedResumeDetails: any;
       await uploader
         .authorize()
         .then((authClient) =>
           uploader.uploadFIle(authClient, file, newFileName)
         )
         .then((file: any) => {
-          UploadedResumeDetails = file.data
+          UploadedResumeDetails = file.data;
         })
         .catch((error) => {
-          throw new Error(error)
+          throw new Error(error);
         });
-        
-
-      return req.body;
+      const resumelink = UploadedResumeDetails.webViewLink;
+      const Usercard = await UserModel.create({
+        firstname,
+        lastname,
+        resumelink,
+        about,
+        email,
+        number,
+        country,
+        street,
+        city,
+        state,
+        expirence,
+        currentorg,
+        currentctc,
+        expectctc,
+        relocate,
+        retailExp,
+      });
+      
+      
+      if (Usercard) {
+        const { firstname, lastname, email, number } = Usercard;
+        return { success: 1, data: { firstname, lastname, email, number } };
+      } else {
+        return { success: 0, data: "Sorry we cant proceed with this application, try again"};
+      }
     } catch (error: any) {
       throw new Error(error);
     }
@@ -41,15 +82,15 @@ class UserRepository implements IUserRepository {
 
   public async GetInfoForUser(): Promise<any> {
     try {
-      const ExpirenceList = await Experience.find({})
-      const StateList = await State.find({})
+      const ExpirenceList = await Experience.find({});
+      const StateList = await State.find({});
       const FinalResponse = {
         ExpirenceList,
         StateList,
       };
       return FinalResponse;
     } catch (error: any) {
-      throw new Error(error)
+      throw new Error(error);
     }
   }
 }

@@ -5,10 +5,11 @@ export class Usercontroller {
     try {
       const userRepoclass = new UserRepository();
       const userCreationRes: any = await userRepoclass.SaveUser(req);
-      if (userCreationRes) {
-        res
-          .status(config.statusCode.successful)
-          .json({ success: 1, data: "userCreationRes" });
+      if (userCreationRes.success === 1) {
+        res.status(config.statusCode.successful).json({
+          success: userCreationRes.success,
+          data: userCreationRes.data,
+        });
       } else {
         res
           .status(config.statusCode.internalServer)
