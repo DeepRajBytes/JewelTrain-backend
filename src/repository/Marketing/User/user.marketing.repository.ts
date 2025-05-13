@@ -28,12 +28,17 @@ class UserRepository implements IUserRepository {
         relocate,
         retailExp,
       } = req.body;
-      const newFileName = `${currentDate}_${firstname.replace(
-        / /g,
-        "_"
-      )}_${lastname.replace(/ /g, "_")}${file.originalname.slice(
-        file.originalname.lastIndexOf(".")
-      )}`;
+
+      const Userpresence = await UserModel.find({email: email});
+      if (Userpresence.length > 0) {
+        return { success: 2, data: "This email already align with other user please use any other email"}
+      }
+        const newFileName = `${currentDate}_${firstname.replace(
+          / /g,
+          "_"
+        )}_${lastname.replace(/ /g, "_")}${file.originalname.slice(
+          file.originalname.lastIndexOf(".")
+        )}`;
 
       // Upload File
       let UploadedResumeDetails: any;

@@ -2,6 +2,7 @@ import express, { Request, Response } from "express";
 import cors from 'cors';
 import bodyParser from "body-parser";
 import adminAuthRouter from "./api/Admin/Adminauth/Adminauth.router";
+import adminRoute from "./api/Admin/AdminRoute/Adminroute.router";
 import clientRouter from "./api/Marketing/Clients/Clients.router"
 import userRoute from "./api/Marketing/Users/User.router";
 import config from "./config/ENV/config";
@@ -26,6 +27,7 @@ class App {
     this.app.get("/", (req: Request, res: Response) => {
       res.send("Hello, TypeScript Backend!!");
     });
+    this.app.use("/admins/route", adminRoute.router);
     this.app.use("/admin", adminAuthRouter.router);
     this.app.use("/marketing", clientRouter.router);
     this.app.use("/marketing", userRoute.router);

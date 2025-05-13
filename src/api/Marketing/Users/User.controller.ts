@@ -10,6 +10,10 @@ export class Usercontroller {
           success: userCreationRes.success,
           data: userCreationRes.data,
         });
+      } else if (userCreationRes.success === 2) {
+        res
+          .status(config.statusCode.conflict)
+          .json({ success: 0, MESSAGE: userCreationRes.data });
       } else {
         res
           .status(config.statusCode.internalServer)

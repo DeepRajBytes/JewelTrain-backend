@@ -27,13 +27,13 @@ const UserRequestdata = new Schema<IUserRequestDatatype>(
       type: String,
     },
     resumelink: { type: String },
-    firstname: { type: String },
-    lastname: { type: String },
-    email: { type: String },
-    number: { type: Number },
+    firstname: { type: String, index: true },
+    lastname: { type: String, index: true },
+    email: { type: String, unique: true },
+    number: { type: Number, unique: true },
     country: { type: String },
     street: { type: String },
-    city: { type: String },
+    city: { type: String, index: true },
     state: { type: mongoose.Schema.Types.ObjectId, ref: "State" },
     expirence: { type: mongoose.Schema.Types.ObjectId, ref: "Experience" },
     currentorg: { type: String },
@@ -46,6 +46,9 @@ const UserRequestdata = new Schema<IUserRequestDatatype>(
     timestamps: true,
   }
 );
+
+UserRequestdata.index({ firstname: 1, lastname: 1 });
+UserRequestdata.index({ email: 1, firstname: 1 });
 
 const UserModel = mongoose.model<IUserRequestDatatype>(
   "Users",

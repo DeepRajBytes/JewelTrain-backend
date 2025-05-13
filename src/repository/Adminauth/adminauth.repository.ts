@@ -45,9 +45,9 @@ class AdminauthRepository implements IAdminauthRepository {
 
   async signin(requesData: any): Promise<any> {
     try {
-      const email = requesData.email;
+      let email = requesData.email;
       const nonHashPass = requesData.password;
-      const mobile = requesData.mobile;
+      let mobile = requesData.mobile;
 
       // Find exisiting Email
       let isAdminEmailPresent;
@@ -61,6 +61,8 @@ class AdminauthRepository implements IAdminauthRepository {
         if (!isAdminEmailPresent) {
           return 1;
         }
+        email = isAdminEmailPresent.email;
+        mobile = isAdminEmailPresent?.mobile;  
       }
       
       // Find exisiting Mobile
@@ -75,6 +77,8 @@ class AdminauthRepository implements IAdminauthRepository {
         if (!isAdminMobilePresent) {
           return 2;
         }
+        email = isAdminMobilePresent.email;
+        mobile = isAdminMobilePresent?.mobile;  
       }
       if(isAdminMobilePresent){
         const hashedPassword = await bcrypt.compare(
@@ -94,10 +98,10 @@ class AdminauthRepository implements IAdminauthRepository {
           return 3;
         }
       }
-
+      console.log("email", email);
+      console.log("mobile", mobile);
       const token = JWT.sign({ email: email, mobile: mobile }, config.JWT_SECREAT_KEY);
       
-
       const AdminCred = {
         token: token,
         data: isAdminEmailPresent ? isAdminEmailPresent : isAdminMobilePresent,
