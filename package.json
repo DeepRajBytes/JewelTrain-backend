@@ -11,7 +11,8 @@
     "watch": "tsc -w",
     "add-build": "git add dist",
     "dev:start": "concurrently \"tsc -w\" \"nodemon dist/server.js\"",
-    "test": "NODE_OPTIONS='--max-old-space-size=4096' jest --silent"
+    "test": "NODE_OPTIONS='--max-old-space-size=4096' jest --silent",
+    "validate": "tsc --noEmit"
   },
   "keywords": [],
   "author": "",
