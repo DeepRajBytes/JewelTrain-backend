@@ -88,7 +88,7 @@ class Adminrouterepository implements IAdminrouterepository {
       }
       const deleteID = await UserModel.deleteOne({ _id: id });
       if (deleteID) {
-        return { sucess: 1, data: "User delete Sucessfull" };
+        return { sucess: 1, data: "User delete Sucessfull from database" };
       }
       return {
         sucess: 0,
