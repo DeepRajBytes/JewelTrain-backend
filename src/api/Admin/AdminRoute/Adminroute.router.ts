@@ -11,8 +11,16 @@ class Adminroute {
   }
 
   public init() {
-    this.router.post("/users", this.adminrouteController.UsersList);
-    this.router.delete("/users/delete", this.adminrouteController.Userdelete);
+    this.router.post(
+      "/users",
+      Adminauthentication,
+      this.adminrouteController.UsersList
+    );
+    this.router.delete(
+      "/users/delete",
+      Adminauthentication,
+      this.adminrouteController.Userdelete
+    );
     this.router.post(
       "/users/update",
       Adminauthentication,
