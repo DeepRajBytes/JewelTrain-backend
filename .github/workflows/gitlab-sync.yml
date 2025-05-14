@@ -19,4 +19,4 @@ jobs:
           git config --global user.name "DeepRajBytes"
 
           git remote add gitlab https://oauth2:${{ secrets.GITLAB_TOKEN }}@gitlab.com/deeprajchouhaniflair/JewelTrain-backend.git
-          git push gitlab main --force
+          git push gitlab main
