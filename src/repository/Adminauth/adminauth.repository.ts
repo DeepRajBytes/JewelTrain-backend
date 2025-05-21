@@ -56,7 +56,7 @@ class AdminauthRepository implements IAdminauthRepository {
           {
             email: email,
           },
-          { _id: 0, email: 1, password: 1, mobile: 1 }
+          { _id: 0, email: 1, password: 0, mobile: 1 }
         );
         if (!isAdminEmailPresent) {
           return 1;
@@ -72,7 +72,7 @@ class AdminauthRepository implements IAdminauthRepository {
           {
             mobile: mobile,
           },
-          { _id: 0, email: 1, password: 1, mobile: 1 }
+          { _id: 0, email: 1, password: 0, mobile: 1 }
         );
         if (!isAdminMobilePresent) {
           return 2;
