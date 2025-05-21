@@ -101,10 +101,17 @@ class AdminauthRepository implements IAdminauthRepository {
       console.log("email", email);
       console.log("mobile", mobile);
       const token = JWT.sign({ email: email, mobile: mobile }, config.JWT_SECREAT_KEY);
+
+      const userDoc = (
+        isAdminEmailPresent || isAdminMobilePresent
+      )?.toObject() as Record<string, any>;;
+      if (userDoc) {
+        delete userDoc.password;
+      }
       
       const AdminCred = {
         token: token,
-        data: isAdminEmailPresent ? isAdminEmailPresent : isAdminMobilePresent,
+        data: userDoc,
       };
       if (AdminCred) {
         return AdminCred;
