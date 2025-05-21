@@ -1,12 +1,11 @@
 import express, { Request, Response } from "express";
-import cors from 'cors';
+import cors from "cors";
 import bodyParser from "body-parser";
 import adminAuthRouter from "./api/Admin/Adminauth/Adminauth.router";
 import adminRoute from "./api/Admin/AdminRoute/Adminroute.router";
-import clientRouter from "./api/Marketing/Clients/Clients.router"
+import clientRouter from "./api/Marketing/Clients/Clients.router";
 import userRoute from "./api/Marketing/Users/User.router";
 import config from "./config/ENV/config";
-
 
 class App {
   public app: express.Application;
@@ -18,9 +17,15 @@ class App {
   }
 
   private config(): void {
-    this.app.use(cors())
-    this.app.use(bodyParser.json({ limit: '100mb'}))
-    this.app.use(bodyParser.urlencoded({extended: true , limit: '100mb', parameterLimit: 1000000}))
+    this.app.use(cors());
+    this.app.use(bodyParser.json({ limit: "100mb" }));
+    this.app.use(
+      bodyParser.urlencoded({
+        extended: true,
+        limit: "100mb",
+        parameterLimit: 1000000,
+      })
+    );
   }
 
   private router(): void {
@@ -28,7 +33,7 @@ class App {
       res.send("Hello, TypeScript Backend!!");
     });
     this.app.use("/admins/route", adminRoute.router);
-    this.app.use("/admin", adminAuthRouter.router);
+    this.app.use("/admins", adminAuthRouter.router);
     this.app.use("/marketing", clientRouter.router);
     this.app.use("/marketing", userRoute.router);
   }
