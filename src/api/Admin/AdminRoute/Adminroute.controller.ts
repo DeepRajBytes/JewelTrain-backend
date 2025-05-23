@@ -66,18 +66,42 @@ export class AdminrouteController {
     }
   }
 
-  public async updateUser(req:Request, res: Response): Promise <any>{
+  public async updateUser(req: Request, res: Response): Promise<any> {
     try {
-      const updateRepo = new Adminrouterepository()
-      const updatedUSer = await updateRepo.updateUser(req)
-      if(updatedUSer.success === true) {
-        res.status(config.statusCode.successful).json({success : true , data: updatedUSer})
+      const updateRepo = new Adminrouterepository();
+      const updatedUSer = await updateRepo.updateUser(req);
+      if (updatedUSer.success === true) {
+        res
+          .status(config.statusCode.successful)
+          .json({ success: true, data: updatedUSer });
       } else {
         res
           .status(config.statusCode.conflict)
           .json({ success: false, data: "User update fail Please try again" });
       }
-    } catch (error:any) {
+    } catch (error: any) {
+      res
+        .status(config.statusCode.internalServer)
+        .json({ error: error.message });
+    }
+  }
+
+  public async UserDetails(req: Request, res: Response): Promise<any> {
+    try {
+      const updateRepo = new Adminrouterepository();
+      const userId = req.params.id
+      console.log(userId);
+      const UserInfo = await updateRepo.userDetails(userId);
+      if (UserInfo.success === true) {
+        res
+          .status(config.statusCode.successful)
+          .json({ success: true, data: UserInfo });
+      } else {
+        res
+          .status(config.statusCode.conflict)
+          .json({ success: false, data: "User Not present in database" });
+      }
+    } catch (error: any) {
       res
         .status(config.statusCode.internalServer)
         .json({ error: error.message });

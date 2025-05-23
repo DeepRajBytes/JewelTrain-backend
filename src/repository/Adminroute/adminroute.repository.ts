@@ -52,7 +52,8 @@ class Adminrouterepository implements IAdminrouterepository {
             number: 1,
             city: 1,
             currentorg: 1,
-            state: "$stateInfo.name",
+            resumelink: 1,
+            state: "$stateInfo.StateName",
             experience: "$experienceInfo.ExperienceRange",
           },
         },
@@ -99,7 +100,7 @@ class Adminrouterepository implements IAdminrouterepository {
     }
   }
 
-  async updateUser(req: any ): Promise <any> {
+  async updateUser(req: any): Promise<any> {
     try {
       const allowedFields = [
         "about",
@@ -120,36 +121,60 @@ class Adminrouterepository implements IAdminrouterepository {
       ];
       const { _id } = req.body;
 
-       if (!_id) {
-         return { success: false, message: "_id is required for updating." };
-       }
+      if (!_id) {
+        return { success: false, message: "_id is required for updating." };
+      }
 
-       const updateSet: any = {};
-       for (let key of Object.keys(req.body)) {
-         if (allowedFields.includes(key)) {
-           if (["state", "expirence"].includes(key)) {
-             updateSet[key] = new mongoose.Types.ObjectId(req.body[key]);
-           } else {
-             updateSet[key] = req.body[key];
-           }
-         }
-       }
+      const updateSet: any = {};
+      for (let key of Object.keys(req.body)) {
+        if (allowedFields.includes(key)) {
+          if (["state", "expirence"].includes(key)) {
+            updateSet[key] = new mongoose.Types.ObjectId(req.body[key]);
+          } else {
+            updateSet[key] = req.body[key];
+          }
+        }
+      }
 
-       const updatedUser = await UserModel.findByIdAndUpdate(_id , {$set : updateSet}, {new : true});
-       
-       if (updatedUser) {
-        return {success : true , updatedData : updatedUser , data : "User Succesfully Updated"}
-       } else {
+      const updatedUser = await UserModel.findByIdAndUpdate(
+        _id,
+        { $set: updateSet },
+        { new: true }
+      );
+
+      if (updatedUser) {
+        return {
+          success: true,
+          updatedData: updatedUser,
+          data: "User Succesfully Updated",
+        };
+      } else {
         return {
           success: false,
           data: "User not Succesfully Updated",
         };
-       }
-
-    } catch (error:any) {
-      throw new Error(error)
+      }
+    } catch (error: any) {
+      throw new Error(error);
     }
-  };
+  }
+
+  async userDetails(_id: any): Promise<any> {
+    try {
+      if (!_id) {
+        return { success: false, message: "User not Present in the Database" };
+      }
+      const UserInfo = await UserModel.findById(_id)
+        .populate("state", "StateName")
+        .populate("expirence", "ExperienceRange");
+      if (!UserInfo) {
+        return { success: false, message: "User not Present in the Database" };
+      }
+      return { success: true, data: UserInfo };;
+    } catch (error: any) {
+      throw new Error(error);
+    }
+  }
 }
 
 export default Adminrouterepository;

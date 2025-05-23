@@ -26,6 +26,11 @@ class Adminroute {
       Adminauthentication,
       this.adminrouteController.updateUser
     );
+     this.router.get(
+       "/users/userdetail/:id",
+       Adminauthentication,
+       this.adminrouteController.UserDetails
+     );
   }
 }
 const adminRoute = new Adminroute;
