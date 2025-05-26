@@ -89,9 +89,73 @@ export class AdminrouteController {
   public async UserDetails(req: Request, res: Response): Promise<any> {
     try {
       const updateRepo = new Adminrouterepository();
-      const userId = req.params.id
+      const userId = req.params.id;
       console.log(userId);
       const UserInfo = await updateRepo.userDetails(userId);
+      if (UserInfo.success === true) {
+        res
+          .status(config.statusCode.successful)
+          .json({ success: true, data: UserInfo });
+      } else {
+        res
+          .status(config.statusCode.conflict)
+          .json({ success: false, data: "User Not present in database" });
+      }
+    } catch (error: any) {
+      res
+        .status(config.statusCode.internalServer)
+        .json({ error: error.message });
+    }
+  }
+
+  public async ClientList(req: Request, res: Response): Promise<any> {
+    try {
+      const adminrouteRepo = new Adminrouterepository();
+      const page = parseInt(req.body.page) || 1;
+      let limit = parseInt(req.body.limit) || 10;
+
+      const allowedLimits = [10, 20, 50, 100];
+      if (!allowedLimits.includes(limit)) {
+        limit = 10;
+      }
+      const skip = (page - 1) * 10;
+
+      const search = (req.query.search as string) || "";
+      const sort = (req.query.sort as string) || "";
+      const sortOptions = parseInt(req.query.sortOption as string) || -1;
+
+      const Userlistresponse = await adminrouteRepo.ClientList({
+        page,
+        limit,
+        skip,
+        search,
+        sort,
+        sortOptions,
+      });
+      if (Userlistresponse) {
+        res.status(200).json({
+          success: true,
+          data: Userlistresponse,
+        });
+      } else {
+        res.status(config.statusCode.conflict).json({
+          success: false,
+          data: "USERS_NOT_FOUND",
+        });
+      }
+    } catch (error: any) {
+      res
+        .status(config.statusCode.internalServer)
+        .json({ error: error.message });
+    }
+  }
+
+  public async ClientDetails(req: Request, res: Response): Promise<any> {
+    try {
+      const updateRepo = new Adminrouterepository();
+      const userId = req.params.id;
+      console.log(userId);
+      const UserInfo = await updateRepo.clientDetails(userId);
       if (UserInfo.success === true) {
         res
           .status(config.statusCode.successful)

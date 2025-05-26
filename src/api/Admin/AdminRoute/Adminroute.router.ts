@@ -26,12 +26,22 @@ class Adminroute {
       Adminauthentication,
       this.adminrouteController.updateUser
     );
-     this.router.get(
-       "/users/userdetail/:id",
-       Adminauthentication,
-       this.adminrouteController.UserDetails
-     );
+    this.router.get(
+      "/users/userdetail/:id",
+      Adminauthentication,
+      this.adminrouteController.UserDetails
+    );
+    this.router.post(
+      "/clients",
+      Adminauthentication,
+      this.adminrouteController.ClientList
+    );
+    this.router.get(
+      "/clients/clientdetail/:id",
+      Adminauthentication,
+      this.adminrouteController.ClientDetails
+    );
   }
 }
-const adminRoute = new Adminroute;
+const adminRoute = new Adminroute();
 export default adminRoute;

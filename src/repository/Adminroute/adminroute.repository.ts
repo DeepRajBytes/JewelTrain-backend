@@ -2,6 +2,7 @@ import { any, number, options } from "joi";
 import { IAdminrouterepository } from "../contracts/Adminroute/i.adminroute.repository";
 import UserModel from "../../Database/Model/Marketing/UserRequest";
 import mongoose from "mongoose";
+import ClientRequestModel from "../../Database/Model/Marketing/ClientRequest";
 
 class Adminrouterepository implements IAdminrouterepository {
   async Userlist(req: any): Promise<any> {
@@ -170,7 +171,81 @@ class Adminrouterepository implements IAdminrouterepository {
       if (!UserInfo) {
         return { success: false, message: "User not Present in the Database" };
       }
-      return { success: true, data: UserInfo };;
+      return { success: true, data: UserInfo };
+    } catch (error: any) {
+      throw new Error(error);
+    }
+  }
+
+  async ClientList(req: any): Promise<any> {
+    try {
+      const { page, limit, skip, search = "", sort, sortOptions } = req;
+      const searchFilter = search
+        ? {
+            $or: [
+              { name: { $regex: search, $options: "i" } },
+              { brandName: { $regex: search, $options: "i" } },
+              { email: { $regex: search, $options: "i" } },
+              { number: { $regex: search, $options: "i" } },
+              { lastname: { $regex: search, $options: "i" } },
+            ],
+          }
+        : {};
+
+      const sortOption: Record<string, 1 | -1> = sort
+        ? { [sort]: sortOptions }
+        : { createdAt: sortOptions };
+      const pipeline = [
+        { $match: searchFilter },
+        { $sort: sortOption },
+        {
+          $project: {
+            _id: 1,
+            name: 1,
+            lastName: 1,
+            email: 1,
+            number: 1,
+            brandName: 1,
+            currentorg: 1,
+            resumelink: 1,
+            message: 1,
+            createdAt: 1,
+            updatedAt: 1,
+          },
+        },
+        {
+          $facet: {
+            metaData: [{ $count: "total" }],
+            data: [{ $skip: skip || 0 }, { $limit: limit || 10 }],
+          },
+        },
+      ];
+
+      const result = await ClientRequestModel.aggregate(pipeline);
+      const metadata = result[0]?.metaData[0];
+      const Clients = result[0]?.data;
+      return {
+        page,
+        limit,
+        totalClients: metadata.total,
+        totalPages: Math.ceil(metadata.total / limit),
+        Clients,
+      };
+    } catch (error: any) {
+      throw new Error(error);
+    }
+  }
+
+  async clientDetails(_id: any): Promise<any> {
+    try {
+      if (!_id) {
+        return { success: false, message: "User not Present in the Database" };
+      }
+      const UserInfo = await ClientRequestModel.findById(_id)
+      if (!UserInfo) {
+        return { success: false, message: "User not Present in the Database" };
+      }
+      return { success: true, data: UserInfo };
     } catch (error: any) {
       throw new Error(error);
     }
