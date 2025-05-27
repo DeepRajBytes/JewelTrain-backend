@@ -19,6 +19,8 @@ interface IUserRequestDatatype {
   expectctc: string;
   relocate: boolean;
   retailExp: boolean;
+  active:boolean;
+  blockAdmin:boolean;
 }
 
 const UserRequestdata = new Schema<IUserRequestDatatype>(
@@ -41,6 +43,8 @@ const UserRequestdata = new Schema<IUserRequestDatatype>(
     expectctc: { type: String },
     relocate: { type: Boolean, default: true },
     retailExp: { type: Boolean, default: false },
+    active: { type: Boolean, default: true },
+    blockAdmin: { type: Boolean, default: false },
   },
   {
     timestamps: true,

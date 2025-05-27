@@ -71,4 +71,24 @@ export class AdminauthController {
         .json({ error: error.message });
     }
   }
+
+  public async GetInfoForUserAdmin(req: any, res: any) {
+    try {
+      const adminRepoclass = new AdminauthRepository();
+      const FinalResponse: any = await adminRepoclass.GetInfoForUserAdmin();
+      if (FinalResponse) {
+        res
+          .status(config.statusCode.successful)
+          .json({ success: 1, data: FinalResponse });
+      } else {
+        res
+          .status(config.statusCode.internalServer)
+          .json({ success: 0, MESSAGE: "Something went wrong from our side" });
+      }
+    } catch (error: any) {
+      res
+        .status(config.statusCode.internalServer)
+        .json({ error: error.message });
+    }
+  }
 }

@@ -70,6 +70,7 @@ export class AdminrouteController {
     try {
       const updateRepo = new Adminrouterepository();
       const updatedUSer = await updateRepo.updateUser(req);
+      console.log("updatedUSer", updatedUSer);
       if (updatedUSer.success === true) {
         res
           .status(config.statusCode.successful)
@@ -100,6 +101,28 @@ export class AdminrouteController {
         res
           .status(config.statusCode.conflict)
           .json({ success: false, data: "User Not present in database" });
+      }
+    } catch (error: any) {
+      res
+        .status(config.statusCode.internalServer)
+        .json({ error: error.message });
+    }
+  }
+
+  public async ActionUser(req: Request, res: Response): Promise<any> {
+    try {
+      const userRepo = new Adminrouterepository();
+      const actionResponse = await userRepo.actionUser(req);
+      if (actionResponse.success === 0) {
+        res.status(config.statusCode.conflict).json({
+          success: false,
+          data: actionResponse.data,
+        });
+      } else {
+        res.status(config.statusCode.successful).json({
+          success: true,
+          data: actionResponse.data,
+        });
       }
     } catch (error: any) {
       res

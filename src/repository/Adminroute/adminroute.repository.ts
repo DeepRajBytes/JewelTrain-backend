@@ -1,4 +1,3 @@
-import { any, number, options } from "joi";
 import { IAdminrouterepository } from "../contracts/Adminroute/i.adminroute.repository";
 import UserModel from "../../Database/Model/Marketing/UserRequest";
 import mongoose from "mongoose";
@@ -119,6 +118,7 @@ class Adminrouterepository implements IAdminrouterepository {
         "expectctc",
         "relocate",
         "retailExp",
+        "active",
       ];
       const { _id } = req.body;
 
@@ -142,6 +142,7 @@ class Adminrouterepository implements IAdminrouterepository {
         { $set: updateSet },
         { new: true }
       );
+      console.log("updatedUser", updatedUser);
 
       if (updatedUser) {
         return {
@@ -155,6 +156,45 @@ class Adminrouterepository implements IAdminrouterepository {
           data: "User not Succesfully Updated",
         };
       }
+    } catch (error: any) {
+      throw new Error(error);
+    }
+  }
+
+  async actionUser(req: any): Promise<any> {
+    try {
+      const { id } = req.query;
+      const { action } = req.query;
+      const userPresence = await UserModel.findOne({ _id: id });
+      if (!userPresence) {
+        return { sucess: 0, data: "Sorry admin this user not present" };
+      }
+      let blockAdmin: boolean;
+      let active: boolean;
+
+      if (action === "BLOCK") {
+        blockAdmin = true;
+        active = false;
+      } else if (action === "UNBLOCK") {
+        blockAdmin = false;
+        active = true;
+      } else {
+        return { success: 0, data: "Invalid action provided" };
+      }
+      const updateResult = await UserModel.updateOne(
+        { _id: id },
+        {
+          blockAdmin,
+          active,
+        }
+      );
+      if (updateResult.modifiedCount > 0) {
+        return { sucess: 1, data: `User ${action} succesfully ` };
+      }
+      return {
+        sucess: 0,
+        data: "No changes were made. Maybe the user is already in the desired state",
+      };
     } catch (error: any) {
       throw new Error(error);
     }
@@ -241,7 +281,7 @@ class Adminrouterepository implements IAdminrouterepository {
       if (!_id) {
         return { success: false, message: "User not Present in the Database" };
       }
-      const UserInfo = await ClientRequestModel.findById(_id)
+      const UserInfo = await ClientRequestModel.findById(_id);
       if (!UserInfo) {
         return { success: false, message: "User not Present in the Database" };
       }

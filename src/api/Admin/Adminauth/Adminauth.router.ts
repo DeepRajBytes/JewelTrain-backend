@@ -14,6 +14,7 @@ class Adminauth {
   init() {
     this.router.post("/adminsignup", this.adminauthController.signup);
     this.router.post("/adminsignin", this.adminauthController.signin);
+    this.router.get("/adminIntitalse", this.adminauthController.GetInfoForUserAdmin);
   }
 }
 

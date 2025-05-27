@@ -3,6 +3,8 @@ import AdmincredentialModel from "../../Database/Model/Auth/AdminCreditional";
 import { IAdminauthRepository } from "../contracts/Adminauth/i.adminauth.repository";
 import JWT from 'jsonwebtoken'
 import config from "../../config/ENV/config";
+import Experience from "../../Database/Model/common/Experience/Experience";
+import State from "../../Database/Model/common/Address/State";
 
 class AdminauthRepository implements IAdminauthRepository {
   async signup(requesData: any): Promise<number> {
@@ -62,9 +64,9 @@ class AdminauthRepository implements IAdminauthRepository {
           return 1;
         }
         email = isAdminEmailPresent.email;
-        mobile = isAdminEmailPresent?.mobile;  
+        mobile = isAdminEmailPresent?.mobile;
       }
-      
+
       // Find exisiting Mobile
       let isAdminMobilePresent;
       if (mobile) {
@@ -78,18 +80,18 @@ class AdminauthRepository implements IAdminauthRepository {
           return 2;
         }
         email = isAdminMobilePresent.email;
-        mobile = isAdminMobilePresent?.mobile;  
+        mobile = isAdminMobilePresent?.mobile;
       }
-      if(isAdminMobilePresent){
+      if (isAdminMobilePresent) {
         const hashedPassword = await bcrypt.compare(
           nonHashPass,
           isAdminMobilePresent.password
         );
-        if(!hashedPassword) {
-          return 3
+        if (!hashedPassword) {
+          return 3;
         }
       }
-      if(isAdminEmailPresent) {
+      if (isAdminEmailPresent) {
         const hashedPassword = await bcrypt.compare(
           nonHashPass,
           isAdminEmailPresent.password
@@ -100,15 +102,18 @@ class AdminauthRepository implements IAdminauthRepository {
       }
       console.log("email", email);
       console.log("mobile", mobile);
-      const token = JWT.sign({ email: email, mobile: mobile }, config.JWT_SECREAT_KEY);
+      const token = JWT.sign(
+        { email: email, mobile: mobile },
+        config.JWT_SECREAT_KEY
+      );
 
       const userDoc = (
         isAdminEmailPresent || isAdminMobilePresent
-      )?.toObject() as Record<string, any>;;
+      )?.toObject() as Record<string, any>;
       if (userDoc) {
         delete userDoc.password;
       }
-      
+
       const AdminCred = {
         token: token,
         data: userDoc,
@@ -117,6 +122,20 @@ class AdminauthRepository implements IAdminauthRepository {
         return AdminCred;
       }
       return 4;
+    } catch (error: any) {
+      throw new Error(error);
+    }
+  }
+
+  public async GetInfoForUserAdmin(): Promise<any> {
+    try {
+      const ExpirenceList = await Experience.find({});
+      const StateList = await State.find({});
+      const FinalResponse = {
+        ExpirenceList,
+        StateList,
+      };
+      return FinalResponse;
     } catch (error: any) {
       throw new Error(error);
     }

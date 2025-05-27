@@ -31,6 +31,11 @@ class Adminroute {
       Adminauthentication,
       this.adminrouteController.UserDetails
     );
+    this.router.put(
+      "/users/blockAction",
+      Adminauthentication,
+      this.adminrouteController.ActionUser
+    );
     this.router.post(
       "/clients",
       Adminauthentication,
