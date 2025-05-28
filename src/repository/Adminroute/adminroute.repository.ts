@@ -2,6 +2,7 @@ import { IAdminrouterepository } from "../contracts/Adminroute/i.adminroute.repo
 import UserModel from "../../Database/Model/Marketing/UserRequest.model";
 import mongoose from "mongoose";
 import ClientRequestModel from "../../Database/Model/Marketing/ClientRequest.model";
+import SitedataModel from "../../Database/Model/Marketing/Sitedata.model";
 
 class Adminrouterepository implements IAdminrouterepository {
   // User functions
@@ -396,6 +397,19 @@ class Adminrouterepository implements IAdminrouterepository {
         sucess: 0,
         data: "No changes were made. Maybe the Client is already in the desired state",
       };
+    } catch (error: any) {
+      throw new Error(error);
+    }
+  }
+
+  async getSIteData(): Promise<any> {
+    try {
+      const data = await SitedataModel.find({});
+      if (data) {
+        return { success: true, data: data };
+      } else {
+        return { success: false, data: "Currenlty site data not avaible to show" };
+      }
     } catch (error: any) {
       throw new Error(error);
     }

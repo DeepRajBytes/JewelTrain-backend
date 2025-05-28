@@ -263,4 +263,26 @@ export class AdminrouteController {
         .json({ error: error.message });
     }
   }
+
+  public async GetSitedata(req: Request, res: Response):Promise<any> {
+    try {
+      const clientRepo = new Adminrouterepository();
+      const siteResponse = await clientRepo.getSIteData()
+      if (siteResponse.success === true) {
+        res.status(config.statusCode.successful).json({
+          success: true,
+          data: siteResponse.data,
+        });
+      } else {
+        res.status(config.statusCode.conflict).json({
+          success: false,
+          data: siteResponse.data,
+        });
+      }
+    } catch (error:any) {
+       res
+         .status(config.statusCode.internalServer)
+         .json({ error: error.message });
+    }
+  }
 }

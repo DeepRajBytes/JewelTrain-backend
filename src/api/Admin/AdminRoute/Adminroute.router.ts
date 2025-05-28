@@ -11,6 +11,7 @@ class Adminroute {
   }
 
   public init() {
+    // User route
     this.router.post(
       "/users",
       Adminauthentication,
@@ -62,6 +63,14 @@ class Adminroute {
       "/clients/blockAction",
       Adminauthentication,
       this.adminrouteController.ActionClient
+    );
+
+
+    // site route
+    this.router.get(
+      "/site/getSitedata",
+      Adminauthentication,
+      this.adminrouteController.GetSitedata
     );
   }
 }

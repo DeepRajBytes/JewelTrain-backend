@@ -11,8 +11,8 @@ class AdminauthRepository implements IAdminauthRepository {
     try {
       const email = requesData.email;
       const nonHashPass = requesData.password;
-      const mobile = requesData.mobile;
-
+      const mobile = Number(requesData.mobile);
+      const accessLevel = requesData.accessLevel; 
       // Find exisiting Email
       const isAdminEmailPresent = await AdmincredentialModel.findOne({
         email: email,
@@ -30,11 +30,11 @@ class AdminauthRepository implements IAdminauthRepository {
 
       const salt = await bcrypt.genSalt(10);
       const hashedPassword = await bcrypt.hash(nonHashPass, salt);
-
       const AdminCred = await AdmincredentialModel.create({
         password: hashedPassword,
         email: email,
         mobile: mobile,
+        accessLevel:accessLevel,
       });
       if (AdminCred) {
         return 3;

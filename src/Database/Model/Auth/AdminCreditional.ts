@@ -4,6 +4,7 @@ interface IAdminCreditional {
   password: string;
   email: string;
   mobile: number;
+  accessLevel: "low" | "medium" | "high";
 }
 
 const adminCredential = new Schema<IAdminCreditional>({
@@ -21,7 +22,13 @@ const adminCredential = new Schema<IAdminCreditional>({
   mobile: {
     type: Number,
     unique: true,
-    required: true
+    required: true,
+  },
+  accessLevel: {
+    type: String,
+    enum: ["low", "medium", "high"],
+    default: "low",
+    required: true,
   },
 });
 
