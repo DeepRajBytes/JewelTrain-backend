@@ -2,6 +2,8 @@ import { Request, Response } from "express";
 import { config } from "../../../config/common/config.json";
 import Adminrouterepository from "../../../repository/Adminroute/adminroute.repository";
 export class AdminrouteController {
+
+  // Users controller
   public async UsersList(req: Request, res: Response): Promise<any> {
     try {
       const adminrouteRepo = new Adminrouterepository();
@@ -131,6 +133,9 @@ export class AdminrouteController {
     }
   }
 
+
+  // client controllers
+
   public async ClientList(req: Request, res: Response): Promise<any> {
     try {
       const adminrouteRepo = new Adminrouterepository();
@@ -187,6 +192,70 @@ export class AdminrouteController {
         res
           .status(config.statusCode.conflict)
           .json({ success: false, data: "User Not present in database" });
+      }
+    } catch (error: any) {
+      res
+        .status(config.statusCode.internalServer)
+        .json({ error: error.message });
+    }
+  }
+
+  public async Clientdelete(req: Request, res: Response): Promise<any> {
+    try {
+      const userRepo = new Adminrouterepository();
+      const deleteResponse = await userRepo.deleteClient(req);
+      if (deleteResponse.success === 0) {
+        res.status(config.statusCode.conflict).json({
+          success: false,
+          data: deleteResponse.data,
+        });
+      } else {
+        res.status(config.statusCode.successful).json({
+          success: true,
+          data: deleteResponse.data,
+        });
+      }
+    } catch (error: any) {
+      res
+        .status(config.statusCode.internalServer)
+        .json({ error: error.message });
+    }
+  }
+
+  public async updateClient(req: Request, res: Response): Promise<any> {
+    try {
+      const updateRepo = new Adminrouterepository();
+      const updatedUSer = await updateRepo.updateClient(req);
+      if (updatedUSer.success === true) {
+        res
+          .status(config.statusCode.successful)
+          .json({ success: true, data: updatedUSer });
+      } else {
+        res
+          .status(config.statusCode.conflict)
+          .json({ success: false, data: "User update fail Please try again" });
+      }
+    } catch (error: any) {
+      res
+        .status(config.statusCode.internalServer)
+        .json({ error: error.message });
+    }
+  }
+
+  public async ActionClient(req: Request, res: Response): Promise<any> {
+    try {
+      const clientRepo = new Adminrouterepository();
+      const actionResponse = await clientRepo.actionClient(req);
+      if (actionResponse.success === 0) {
+        res.status(config.statusCode.conflict).json({
+          success: false,
+          data: actionResponse.data,
+        });
+      } else {
+        res.status(config.statusCode.successful).json({
+          success: true,
+          data: actionResponse.data,
+        });
       }
     } catch (error: any) {
       res

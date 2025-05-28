@@ -4,6 +4,7 @@ import bodyParser from "body-parser";
 import adminAuthRouter from "./api/Admin/Adminauth/Adminauth.router";
 import adminRoute from "./api/Admin/AdminRoute/Adminroute.router";
 import clientRouter from "./api/Marketing/Clients/Clients.router";
+import siteRoute from "./api/Marketing/Site/Site.router";
 import userRoute from "./api/Marketing/Users/User.router";
 import config from "./config/ENV/config";
 
@@ -36,6 +37,7 @@ class App {
     this.app.use("/admins", adminAuthRouter.router);
     this.app.use("/marketing", clientRouter.router);
     this.app.use("/marketing", userRoute.router);
+    this.app.use("/marketing", siteRoute.router);
   }
 }
 export default App;

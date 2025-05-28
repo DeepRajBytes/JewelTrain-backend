@@ -36,6 +36,8 @@ class Adminroute {
       Adminauthentication,
       this.adminrouteController.ActionUser
     );
+
+    // Client routes
     this.router.post(
       "/clients",
       Adminauthentication,
@@ -45,6 +47,21 @@ class Adminroute {
       "/clients/clientdetail/:id",
       Adminauthentication,
       this.adminrouteController.ClientDetails
+    );
+    this.router.delete(
+      "/clients/delete",
+      Adminauthentication,
+      this.adminrouteController.Clientdelete
+    );
+    this.router.post(
+      "/clients/update",
+      Adminauthentication,
+      this.adminrouteController.updateClient
+    );
+    this.router.put(
+      "/clients/blockAction",
+      Adminauthentication,
+      this.adminrouteController.ActionClient
     );
   }
 }

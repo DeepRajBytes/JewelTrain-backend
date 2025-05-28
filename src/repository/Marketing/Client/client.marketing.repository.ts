@@ -1,13 +1,14 @@
 import { IClientRepository } from "../../contracts/Marketing/Client/i.client.marketing.repository";
-import ClientRequestModel from "../../../Database/Model/Marketing/ClientRequest";
+import ClientRequestModel from "../../../Database/Model/Marketing/ClientRequest.model";
 import CommonService from "../../Common/common";
 
 class ClientRepository implements IClientRepository {
   async storeClient(req: any): Promise<any> {
     try {
       console.log("req", req);
-      const commonSerice = new CommonService
-      const { name, lastname, brandName, email, number, message } = req;
+      const commonSerice = new CommonService();
+      const { name, lastname, brandName, email, number, message, address } =
+        req;
       const ClientCard = await ClientRequestModel.create({
         name,
         lastname,
@@ -15,11 +16,12 @@ class ClientRepository implements IClientRepository {
         email,
         number,
         message,
+        address,
       });
       if (ClientCard) {
         let userInfo = {
           email: ClientCard.email,
-          name: ClientCard.name + '  ' +ClientCard.lastname,
+          name: ClientCard.name + "  " + ClientCard.lastname,
           brandName: ClientCard.brandName,
           number: ClientCard.number,
           message: ClientCard.message,
@@ -28,8 +30,7 @@ class ClientRepository implements IClientRepository {
         commonSerice.sentAdminMail(userInfo);
       }
       return ClientCard;
-    } catch (error) {
-    }
+    } catch (error) {}
   }
 
   async getClients(): Promise<any> {}

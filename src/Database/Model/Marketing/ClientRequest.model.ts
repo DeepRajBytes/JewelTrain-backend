@@ -8,6 +8,8 @@ interface IClientsRequestDataType {
   email: string;
   number: Number;
   message: string;
+  blockAdmin: boolean;
+  address: string;
 }
 
 const clientRequestData = new Schema<IClientsRequestDataType>(
@@ -34,6 +36,14 @@ const clientRequestData = new Schema<IClientsRequestDataType>(
     },
     message: {
       type: String,
+    },
+    blockAdmin: {
+      type: Boolean,
+      default: false,
+    },
+    address: {
+      type: String,
+      default: "NULL"
     },
   },
   {

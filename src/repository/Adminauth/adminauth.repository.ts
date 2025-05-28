@@ -1,7 +1,7 @@
 import * as bcrypt from "bcrypt";
 import AdmincredentialModel from "../../Database/Model/Auth/AdminCreditional";
 import { IAdminauthRepository } from "../contracts/Adminauth/i.adminauth.repository";
-import JWT from 'jsonwebtoken'
+import JWT from "jsonwebtoken";
 import config from "../../config/ENV/config";
 import Experience from "../../Database/Model/common/Experience/Experience";
 import State from "../../Database/Model/common/Address/State";
